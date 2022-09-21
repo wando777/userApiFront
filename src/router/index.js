@@ -2,6 +2,30 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import Register from '../views/RegisterView'
 import Login from '../views/LoginView'
+import axios from 'axios'
+import UserView from '../views/UserView'
+
+function AdminAuth(to, from, next) {
+  if (localStorage.getItem('token') != undefined) {
+    var headerToken = {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem('token')
+      }
+    }
+    //console.log(headerToken);
+    axios.post("http://localhost:8686/validate", {}, headerToken).then(res => {
+      console.log(res);
+      //console.log("antenticou");
+      next();
+    }).catch(err => {
+      console.log(err);
+      next("/login");
+    });
+  } else {
+    next("/login")
+  }
+}
+
 
 const routes = [
   {
@@ -18,6 +42,12 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login
+  },
+  {
+    path: '/admin/users',
+    name: 'users',
+    component: UserView,
+    beforeEnter: AdminAuth
   },
   {
     path: '/about',
