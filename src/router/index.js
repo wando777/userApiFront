@@ -4,6 +4,7 @@ import Register from '../views/RegisterView'
 import Login from '../views/LoginView'
 import axios from 'axios'
 import UserView from '../views/UserView'
+import EditView from '../views/EditView'
 
 function AdminAuth(to, from, next) {
   if (localStorage.getItem('token') != undefined) {
@@ -50,13 +51,19 @@ const routes = [
     beforeEnter: AdminAuth
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
+    path: '/admin/users/edit/:id',
+    name: 'UserEdit',
+    component: EditView,
+    beforeEnter: AdminAuth
+  },
+  // {
+  //   path: '/about',
+  //   name: 'about',
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+  // }
 ]
 
 const router = createRouter({
